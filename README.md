@@ -2,7 +2,8 @@
 
 ```
 docker build -t markitdown:latest .
-docker run -p 8000:8000 markitdown
+docker create --name markitdown -p 8000:8000 markitdown
+docker start markitdown
 ```
 
 # API
