@@ -1,9 +1,17 @@
 from fastapi import FastAPI, UploadFile, Response
+from fastapi.middleware.cors import CORSMiddleware
 from markitdown import MarkItDown
 import tempfile
 import os
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["POST"],
+    allow_headers=["Content-Type"]
+)
 
 @app.post("/v1/markitdown")
 def process(file: UploadFile):
