@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from markitdown import MarkItDown
 import tempfile
 
@@ -11,6 +12,11 @@ app.add_middleware(
     allow_methods=["POST"],
     allow_headers=["Content-Type"]
 )
+
+@app.get("/")
+def root():
+    with open("index.html", "r") as file:
+        return HTMLResponse(content=file.read())
 
 @app.post("/v1/markitdown")
 def process(file: UploadFile):

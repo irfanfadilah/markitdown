@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="color-scheme" content="dark">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yohns/picocss@2.2.10/css/pico.min.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M14 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z'/%3E%3Cpath fill-rule='evenodd' d='M9.146 8.146a.5.5 0 0 1 .708 0L11.5 9.793l1.646-1.647a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 0-.708'/%3E%3Cpath fill-rule='evenodd' d='M11.5 5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5'/%3E%3Cpath d='M3.56 11V7.01h.056l1.428 3.239h.774l1.42-3.24h.056V11h1.073V5.001h-1.2l-1.71 3.894h-.039l-1.71-3.894H2.5V11z'/%3E%3C/svg%3E">
+    <title>MarkDownIt</title>
+  </head>
+  <body>
+    <main class="container-fluid">
+      <section>
+        <input type="file">
+        <button style="display: none;">Copy to Clipboard</button>
+      </section>
+      <pre style="display: none;"></pre>
+    </main>
+    <style>
+      section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        top: 0;
+        z-index: 1;
+        position: sticky;
+        background: var(--pico-background-color);
+        padding: 1rem 0;
+
+        input {
+          width: auto !important;
+          margin-bottom: 0 !important;
+        }
+
+        button {
+          padding: calc(var(--pico-form-element-spacing-vertical) * .5) 1rem;
+        }
+      }
+
+      pre {
+        padding: 1rem;
+      }
+    </style>
+    <script>
+      const input = document.querySelector('input');
+      const btn = document.querySelector('button');
+      const pre = document.querySelector('pre');
+
+      input.addEventListener('change', async (e) => {
+        pre.textContent = 'Processing...';
+        pre.style.display = 'block';
+        input.disabled = true;
+
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const options = { method: 'POST', body: formData };
+        const response = await fetch('/v1/markitdown', options);
+
+        if (response.ok) {
+          input.disabled = false;
+          btn.style.display = 'block';
+          pre.textContent = await response.text();
+        }
+      });
+
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(pre.textContent);
+        btn.textContent = 'Copied!'
+        setTimeout(() => { btn.textContent = 'Copy to Clipboard' }, 1000);
+      });
+
+      console.info('Source Code => https://github.com/irfanfadilah/markitdown')
+    </script>
+  </body>
+</html>
