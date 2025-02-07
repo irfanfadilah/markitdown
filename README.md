@@ -10,7 +10,13 @@ docker start markitdown
 
 ```
 curl --request POST \
-  --url http://127.0.0.1:8000/v1/markitdown \
+  --url http://localhost:8000/v1/markitdown \
   --header 'Content-Type: multipart/form-data' \
   --form file=path/to/your/file.docx
+```
+
+# Web
+
+```
+http://localhost:8000
 ```
