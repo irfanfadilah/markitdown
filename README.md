@@ -1,9 +1,8 @@
 # Run
 
 ```
-docker build -t markitdown:latest .
-docker create --name markitdown -p 8000:8000 markitdown
-docker start markitdown
+docker stop markitdown && docker rm markitdown # Stop and Remove Existing Container
+docker run --name markitdown -p 8000:8000 --pull=always -d ghcr.io/irfanfadilah/markitdown
 ```
 
 # API
