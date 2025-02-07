@@ -58,11 +58,14 @@
 
         const options = { method: 'POST', body: formData };
         const response = await fetch('/v1/markitdown', options);
+        input.disabled = false;
 
         if (response.ok) {
-          input.disabled = false;
           btn.style.display = 'block';
           pre.textContent = await response.text();
+        } else {
+          btn.style.display = 'none';
+          pre.textContent = 'Error: Invalid/Unsupported File';
         }
       });
 
